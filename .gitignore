@@ -1,0 +1,8 @@
+# Ignore build folders
+.vs/
+bin/
+obj/
+
+# Ignore sensitive config files
+appsettings - Copy.Development.json
+.env
