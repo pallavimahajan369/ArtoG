@@ -4,5 +4,5 @@ bin/
 obj/
 
 # Ignore sensitive config files
-appsettings - Copy.Development.json
+appsettings.json
 .env

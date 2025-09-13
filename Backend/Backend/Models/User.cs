@@ -26,5 +26,7 @@ namespace Backend.Models
         public string Role { get; set; } = "User";   // Default 'User'
 
         public DateTime CreatedAt { get; set; } = DateTime.Now; // Default NOW()
+        
+
     }
 }
