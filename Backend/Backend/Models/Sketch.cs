@@ -25,5 +25,7 @@ namespace Backend.Models
         public User User { get; set; }   // Navigation property
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public bool IsActive { get; set; } = true;
     }
 }

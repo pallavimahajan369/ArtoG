@@ -1,12 +1,11 @@
 ﻿using Backend.Data;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 using Backend.DTO;
 
 namespace Backend.Controllers
@@ -39,7 +38,7 @@ namespace Backend.Controllers
                 Username = dto.Username,
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = "User" // <- Always default User
+                Role = "User"
             };
 
             _context.Users.Add(user);
@@ -57,7 +56,13 @@ namespace Backend.Controllers
                 return Unauthorized("Invalid credentials!");
 
             var token = GenerateJwtToken(user);
-            return Ok(new { token, userId = user.UserId, role = user.Role });
+
+            return Ok(new
+            {
+                token,
+                userId = user.UserId,
+                role = user.Role
+            });
         }
 
         private string GenerateJwtToken(User user)
@@ -65,11 +70,12 @@ namespace Backend.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            // ✅ Simple "role" claim to fix Authorize
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-        new Claim(ClaimTypes.Role, user.Role) // database se role
-    };
+                new Claim("userId", user.UserId.ToString()),
+                new Claim("role", user.Role)
+            };
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
@@ -81,6 +87,5 @@ namespace Backend.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }
