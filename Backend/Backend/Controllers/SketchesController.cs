@@ -18,11 +18,14 @@ namespace Backend.Controllers
             _context = context;
         }
 
-        //  GET all sketches (Everyone)
+
+        //  GET all sketches (User - Only Active)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SketchReadDto>>> GetAll()
         {
-            var sketches = await _context.Sketches.Include(s => s.User)
+            var sketches = await _context.Sketches
+                .Include(s => s.User)
+                .Where(s => s.IsActive)   //  Only active for users
                 .OrderByDescending(s => s.CreatedAt)
                 .ToListAsync();
 
@@ -38,11 +41,59 @@ namespace Backend.Controllers
             }).ToList();
         }
 
-        //  GET single sketch
+        //  GET single sketch (User - Only Active)
         [HttpGet("{id}")]
         public async Task<ActionResult<SketchReadDto>> GetById(int id)
         {
-            var sketch = await _context.Sketches.Include(s => s.User)
+            var sketch = await _context.Sketches
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.DrawingId == id && s.IsActive);
+
+            if (sketch == null) return NotFound();
+
+            return new SketchReadDto
+            {
+                DrawingId = sketch.DrawingId,
+                Title = sketch.Title,
+                Description = sketch.Description,
+                ImageBase64 = Convert.ToBase64String(sketch.ImageData),
+                UploadedBy = sketch.UploadedBy,
+                UploadedByName = sketch.User.Username,
+                CreatedAt = sketch.CreatedAt
+            };
+        }
+
+        
+
+        //  GET all sketches (Admin - Active + Inactive)
+        [HttpGet("admin/all")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<SketchReadDto>>> GetAllAdmin()
+        {
+            var sketches = await _context.Sketches
+                .Include(s => s.User)
+                .OrderByDescending(s => s.CreatedAt)
+                .ToListAsync(); //  No filter
+
+            return sketches.Select(s => new SketchReadDto
+            {
+                DrawingId = s.DrawingId,
+                Title = s.Title,
+                Description = s.Description,
+                ImageBase64 = Convert.ToBase64String(s.ImageData),
+                UploadedBy = s.UploadedBy,
+                UploadedByName = s.User.Username,
+                CreatedAt = s.CreatedAt
+            }).ToList();
+        }
+
+        //  GET single sketch (Admin - Active + Inactive)
+        [HttpGet("admin/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<SketchReadDto>> GetByIdAdmin(int id)
+        {
+            var sketch = await _context.Sketches
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.DrawingId == id);
 
             if (sketch == null) return NotFound();
@@ -59,25 +110,35 @@ namespace Backend.Controllers
             };
         }
 
-        //[Authorize]
-        //[HttpGet("whoami")]
-        //public IActionResult WhoAmI()
-        //{
-        //    return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
-        //}
+        //  Get all sketches uploaded by a specific Admin (Admin only)
+        [HttpGet("admin/byuser/{adminId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<SketchReadDto>>> GetByAdmin(int adminId)
+        {
+            var sketches = await _context.Sketches
+                .Include(s => s.User)
+                .Where(s => s.UploadedBy == adminId) //  No IsActive filter
+                .ToListAsync();
 
+            return sketches.Select(s => new SketchReadDto
+            {
+                DrawingId = s.DrawingId,
+                Title = s.Title,
+                Description = s.Description,
+                ImageBase64 = Convert.ToBase64String(s.ImageData),
+                UploadedBy = s.UploadedBy,
+                UploadedByName = s.User.Username,
+                CreatedAt = s.CreatedAt
+            }).ToList();
+        }
+
+       
 
         //  POST (Only Admin)
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create([FromForm] SketchCreateDto dto)
-
         {
-
-            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
-            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(claims));
-
-
             var userIdClaim = User.FindFirst("userId")?.Value;
             if (string.IsNullOrEmpty(userIdClaim))
                 return Unauthorized("Invalid token!");
@@ -90,7 +151,8 @@ namespace Backend.Controllers
                 Title = dto.Title,
                 Description = dto.Description,
                 ImageData = ms.ToArray(),
-                UploadedBy = int.Parse(userIdClaim)
+                UploadedBy = int.Parse(userIdClaim),
+                IsActive = true 
             };
 
             _context.Sketches.Add(sketch);
@@ -120,38 +182,36 @@ namespace Backend.Controllers
             return Ok(new { message = "Sketch updated successfully" });
         }
 
-        //  DELETE (Only Admin)
+      
+
+        //  SOFT DELETE (Only Admin)
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> SoftDelete(int id)
         {
             var sketch = await _context.Sketches.FindAsync(id);
             if (sketch == null) return NotFound();
 
-            _context.Sketches.Remove(sketch);
+            sketch.IsActive = false; 
+            _context.Sketches.Update(sketch);
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Sketch deleted successfully" });
+
+            return Ok(new { message = "Sketch soft deleted successfully" });
         }
 
-        //  Get all sketches by AdminId (Admin only)
-        [HttpGet("admin/{adminId}")]
+        //  RESTORE (Only Admin)
+        [HttpPost("restore/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<SketchReadDto>>> GetByAdmin(int adminId)
+        public async Task<ActionResult> Restore(int id)
         {
-            var sketches = await _context.Sketches.Include(s => s.User)
-                .Where(s => s.UploadedBy == adminId)
-                .ToListAsync();
+            var sketch = await _context.Sketches.FindAsync(id);
+            if (sketch == null) return NotFound();
 
-            return sketches.Select(s => new SketchReadDto
-            {
-                DrawingId = s.DrawingId,
-                Title = s.Title,
-                Description = s.Description,
-                ImageBase64 = Convert.ToBase64String(s.ImageData),
-                UploadedBy = s.UploadedBy,
-                UploadedByName = s.User.Username,
-                CreatedAt = s.CreatedAt
-            }).ToList();
+            sketch.IsActive = true; // Restore
+            _context.Sketches.Update(sketch);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Sketch restored successfully" });
         }
     }
 }
