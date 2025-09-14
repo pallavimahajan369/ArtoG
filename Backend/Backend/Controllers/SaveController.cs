@@ -18,7 +18,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/save/{drawingId}
-        [Authorize(Roles = "User,Admin")] // ✅ Only logged-in users
+        [Authorize(Roles = "User,Admin")] 
         [HttpPost("{drawingId}")]
         public async Task<IActionResult> SaveDrawing(int drawingId)
         {
@@ -63,7 +63,7 @@ namespace Backend.Controllers
         {
             var saves = await _context.Saves
                 .Where(s => s.UserId == userId)
-                .Include(s => s.Sketch) // assuming relation exists
+                .Include(s => s.Sketch)
                 .ToListAsync();
 
             return Ok(saves);

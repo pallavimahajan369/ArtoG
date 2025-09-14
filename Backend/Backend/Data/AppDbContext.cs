@@ -12,7 +12,7 @@ namespace Backend.Data
         public DbSet<Like> Likes { get; set; }
         public DbSet<Save> Saves { get; set; }
 
-        // ⚡ This is where modelBuilder exists
+        //  This is where modelBuilder exists
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

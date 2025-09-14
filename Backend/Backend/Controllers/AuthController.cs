@@ -70,7 +70,7 @@ namespace Backend.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // ✅ Simple "role" claim to fix Authorize
+           
             var claims = new[]
             {
                 new Claim("userId", user.UserId.ToString()),

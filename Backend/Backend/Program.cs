@@ -8,14 +8,12 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// -------------------------
-// Services
-// -------------------------
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// ✅ Swagger with JWT support
+//  Swagger with JWT support
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ArtoG API", Version = "v1" });
@@ -42,7 +40,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// ✅ DbContext with MySQL
+//  DbContext with MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -50,7 +48,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
-// ✅ JWT Authentication
+//  JWT Authentication
 var key = builder.Configuration["Jwt:Key"];
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -74,9 +72,7 @@ builder.Services.AddAuthentication("Bearer")
 
 var app = builder.Build();
 
-// -------------------------
-// Middleware
-// -------------------------
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -88,7 +84,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// ✅ Authentication before Authorization
+
 app.UseAuthentication();
 app.UseAuthorization();
 
