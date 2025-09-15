@@ -69,8 +69,20 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("http://localhost:5173") // React URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
 
 var app = builder.Build();
+
+app.UseCors("AllowFrontend");
+
 
 
 if (app.Environment.IsDevelopment())
