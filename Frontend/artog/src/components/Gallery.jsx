@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SketchCard from "./SketchCard";
-import api from "../api/Sketchapi";
+import { getAllSketches } from "../api/SketchApi"; // ✅ use the merged API
 
 const Gallery = () => {
   const [sketches, setSketches] = useState([]);
@@ -9,8 +9,8 @@ const Gallery = () => {
   useEffect(() => {
     const fetchSketches = async () => {
       try {
-        const response = await api.get("/sketches");
-        setSketches(response.data);
+        const data = await getAllSketches(); // call API function
+        setSketches(data);
       } catch (err) {
         console.error("Failed to fetch sketches", err);
       } finally {
