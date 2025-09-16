@@ -1,6 +1,6 @@
 // src/pages/Gallery.jsx
 import React, { useEffect, useState } from "react";
-import api from "../api/api"; // axios instance we created earlier
+import api from "../api/Sketchapi"; // axios instance we created earlier
 
 function Gallery() {
   const [sketches, setSketches] = useState([]);

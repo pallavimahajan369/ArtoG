@@ -1,31 +1,26 @@
 import React, { useEffect, useState } from "react";
 import SketchCard from "./SketchCard";
-import api from "../api/Sketchapi"; // import your axios instance
+import api from "../api/Sketchapi";
 
 const Gallery = () => {
   const [sketches, setSketches] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchSketches = async () => {
       try {
-        const response = await api.get("/sketches"); // your backend endpoint
+        const response = await api.get("/sketches");
         setSketches(response.data);
       } catch (err) {
-        console.error(err);
-        setError("Failed to fetch sketches.");
+        console.error("Failed to fetch sketches", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchSketches();
   }, []);
 
-  if (loading)
-    return <p className="text-center text-white mt-10">Loading sketches...</p>;
-  if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
+  if (loading) return <p className="text-center text-white">Loading...</p>;
 
   return (
     <section id="gallery" className="bg-black py-20 px-4 sm:px-6 lg:px-8">
@@ -50,9 +45,10 @@ const Gallery = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {/* Pinterest-style masonry grid */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
           {sketches.map((sketch) => (
-            <SketchCard key={sketch.id} sketch={sketch} />
+            <SketchCard key={sketch.drawingId} sketch={sketch} />
           ))}
         </div>
       </div>

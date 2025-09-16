@@ -24,10 +24,10 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<SketchReadDto>>> GetAll()
         {
             var sketches = await _context.Sketches
-                .Include(s => s.User)
-                .Where(s => s.IsActive)   //  Only active for users
-                .OrderByDescending(s => s.CreatedAt)
-                .ToListAsync();
+                 .Include(s => s.User)
+                    .Where(s => s.IsActive)   
+                    .OrderBy(s => s.CreatedAt) 
+                    .ToListAsync();
 
             return sketches.Select(s => new SketchReadDto
             {
@@ -72,7 +72,7 @@ namespace Backend.Controllers
         {
             var sketches = await _context.Sketches
                 .Include(s => s.User)
-                .OrderByDescending(s => s.CreatedAt)
+                .OrderBy(s => s.CreatedAt)
                 .ToListAsync(); //  No filter
 
             return sketches.Select(s => new SketchReadDto
