@@ -10,7 +10,7 @@ const Home = () => {
   const [isAutoplayEnabled, setIsAutoplayEnabled] = useState(() => {
     const savedPreference = localStorage.getItem("autoplayMusic");
     // Default to true if no preference is saved
-    return savedPreference !== "false";
+    return savedPreference !== "true";
   });
 
   useEffect(() => {
@@ -26,12 +26,10 @@ const Home = () => {
       <Navbar />
       <main>
         <Hero />
-        <Gallery />
+        <Gallery limit={8} showSubtitle={true} />
+
       </main>
-      <Footer
-        isAutoplayEnabled={isAutoplayEnabled}
-        onToggleAutoplay={toggleAutoplay}
-      />
+     
       <BackgroundMusic isAutoplayEnabled={isAutoplayEnabled} />
     </div>
   );
