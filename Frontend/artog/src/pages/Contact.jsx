@@ -107,8 +107,9 @@ const Contact = () => {
           )}
         </section>
         <div className="mt-16">
-  <Footer />
+  
 </div>
+<Footer />
       </main>
 
       {/* Footer */}
