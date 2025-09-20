@@ -1,4 +1,5 @@
 ﻿using Backend.Data;
+using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,11 +33,12 @@ namespace Backend.Controllers
                 user.Username,
                 user.Email,
                 user.Role,
-                user.CreatedAt
+                user.CreatedAt,
+                user.IsActive
             });
         }
 
-        //  GET /api/user/{id}/saved
+        // GET /api/user/{id}/saved
         [HttpGet("{id}/saved")]
         [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> GetSavedDrawings(int id)
@@ -56,7 +58,7 @@ namespace Backend.Controllers
             return Ok(saved);
         }
 
-        //  GET /api/user/{id}/liked
+        // GET /api/user/{id}/liked
         [HttpGet("{id}/liked")]
         [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> GetLikedDrawings(int id)
@@ -74,6 +76,53 @@ namespace Backend.Controllers
                 .ToListAsync();
 
             return Ok(liked);
+        }
+
+        //  UPDATE USER
+        [HttpPut("{id}")]
+        [Authorize(Roles = "User,Admin")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] User updatedUser)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+
+            user.Username = updatedUser.Username ?? user.Username;
+            user.Email = updatedUser.Email ?? user.Email;
+            user.Role = updatedUser.Role ?? user.Role;
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "User updated successfully" });
+        }
+
+        //  DELETE USER (soft delete -> set IsActive = false)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+
+            user.IsActive = false;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User deactivated successfully" });
+        }
+
+        //  RESTORE USER (set IsActive = true)
+        [HttpPatch("{id}/restore")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RestoreUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+
+            user.IsActive = true;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User restored successfully" });
         }
     }
 }

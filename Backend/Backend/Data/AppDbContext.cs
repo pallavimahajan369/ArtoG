@@ -11,6 +11,8 @@ namespace Backend.Data
         public DbSet<Sketch> Sketches { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Save> Saves { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
 
         //  This is where modelBuilder exists
         protected override void OnModelCreating(ModelBuilder modelBuilder)

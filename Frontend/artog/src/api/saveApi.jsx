@@ -17,3 +17,9 @@ export const getUserSaves = async (userId) => {
   const response = await api.get(`/save/user/${userId}`);
   return response.data;
 };
+
+// Get total number of users who saved a drawing
+export const getDrawingSaveCount = async (drawingId) => {
+  const response = await api.get(`/save/drawing/${drawingId}/count`);
+  return response.data;
+};

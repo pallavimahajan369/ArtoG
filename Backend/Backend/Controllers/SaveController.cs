@@ -18,7 +18,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/save/{drawingId}
-        [Authorize(Roles = "User,Admin")] 
+       
         [HttpPost("{drawingId}")]
         public async Task<IActionResult> SaveDrawing(int drawingId)
         {
@@ -41,7 +41,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/save/{drawingId}
-        [Authorize(Roles = "User,Admin")]
+       
         [HttpDelete("{drawingId}")]
         public async Task<IActionResult> RemoveSave(int drawingId)
         {
@@ -68,5 +68,14 @@ namespace Backend.Controllers
 
             return Ok(saves);
         }
+
+        // GET: api/save/drawing/{drawingId}/count
+        [HttpGet("drawing/{drawingId}/count")]
+        public async Task<IActionResult> GetDrawingSaveCount(int drawingId)
+        {
+            var count = await _context.Saves.CountAsync(s => s.DrawingId == drawingId);
+            return Ok(new { drawingId = drawingId, totalSaves = count });
+        }
+
     }
 }
