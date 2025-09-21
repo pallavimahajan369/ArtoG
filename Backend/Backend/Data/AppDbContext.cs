@@ -13,6 +13,8 @@ namespace Backend.Data
         public DbSet<Save> Saves { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<ContactMessage> ContactMessages { get; set; }
+
 
         //  This is where modelBuilder exists
         protected override void OnModelCreating(ModelBuilder modelBuilder)
