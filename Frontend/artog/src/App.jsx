@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import SketchDetailPage from "./pages/SketchDetailPage";
 import ProfilePage from "./pages/ProfilePage";
+import EditProfilePage from "./components/EditProfile";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/signup" element={<Signup  />} />
         <Route path="/sketch/:id" element={<SketchDetailPage />} />
        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/edit-profile" element={<EditProfilePage />} />
       </Routes>
     </Router>
   );

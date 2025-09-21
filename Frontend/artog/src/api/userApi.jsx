@@ -1,7 +1,7 @@
 // src/api/userApi.js
 import api from "../api/axios";
 
-// ✅ Get user details
+//  Get user details
 export const getUserDetails = async (userId) => {
   const token = sessionStorage.getItem("token");
   if (!token) throw new Error("User is not logged in");
@@ -16,7 +16,7 @@ export const getUserDetails = async (userId) => {
   return response.data;
 };
 
-// ✅ Get saved drawings of user
+//  Get saved drawings of user
 export const getUserSavedDrawings = async (userId) => {
   const token = sessionStorage.getItem("token");
   if (!token) throw new Error("User is not logged in");
@@ -31,7 +31,7 @@ export const getUserSavedDrawings = async (userId) => {
   return response.data;
 };
 
-// ✅ Get liked drawings of user
+//  Get liked drawings of user
 export const getUserLikedDrawings = async (userId) => {
   const token = sessionStorage.getItem("token");
   if (!token) throw new Error("User is not logged in");
@@ -46,12 +46,13 @@ export const getUserLikedDrawings = async (userId) => {
   return response.data;
 };
 
-// ✅ Update user
+//  Update user
+// src/api/userApi.js
 export const updateUser = async (userId, updatedUser) => {
   const token = sessionStorage.getItem("token");
   if (!token) throw new Error("User is not logged in");
 
-  const response = await api.put(`/user/${userId}`, updatedUser, {
+  const response = await api.patch(`/user/${userId}`, updatedUser, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -60,6 +61,7 @@ export const updateUser = async (userId, updatedUser) => {
 
   return response.data;
 };
+
 
 //  Delete user (soft delete)
 export const deleteUser = async (userId) => {

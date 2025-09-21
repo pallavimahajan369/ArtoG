@@ -18,7 +18,7 @@ namespace Backend.Controllers
         }
 
         // POST: api/save/{drawingId}
-       
+        [Authorize]
         [HttpPost("{drawingId}")]
         public async Task<IActionResult> SaveDrawing(int drawingId)
         {
@@ -41,7 +41,7 @@ namespace Backend.Controllers
         }
 
         // DELETE: api/save/{drawingId}
-       
+        [Authorize]
         [HttpDelete("{drawingId}")]
         public async Task<IActionResult> RemoveSave(int drawingId)
         {
@@ -59,6 +59,7 @@ namespace Backend.Controllers
 
         // GET: api/save/user/{userId}
         [HttpGet("user/{userId}")]
+        [Authorize]
         public async Task<IActionResult> GetUserSaves(int userId)
         {
             var saves = await _context.Saves
@@ -68,6 +69,18 @@ namespace Backend.Controllers
 
             return Ok(saves);
         }
+
+        // GET: api/save/drawing/{drawingId}/status
+        [Authorize]
+        [HttpGet("drawing/{drawingId}/status")]
+        public async Task<IActionResult> GetSaveStatus(int drawingId)
+        {
+            var userId = int.Parse(User.FindFirst("userId").Value);
+            bool isSaved = await _context.Saves.AnyAsync(s => s.UserId == userId && s.DrawingId == drawingId);
+
+            return Ok(new { drawingId, isSaved });
+        }
+
 
         // GET: api/save/drawing/{drawingId}/count
         [HttpGet("drawing/{drawingId}/count")]

@@ -104,6 +104,22 @@ namespace Backend.Controllers
             return Ok(likes);
         }
 
+
+        // GET: api/like/drawing/{drawingId}/status
+        [Authorize]
+        [HttpGet("drawing/{drawingId}/status")]
+        public async Task<IActionResult> GetLikeStatus(int drawingId)
+        {
+            var userId = User.FindFirst("userId")?.Value;
+            if (userId == null) return Unauthorized("Invalid token");
+
+            bool isLiked = await _context.Likes
+                .AnyAsync(l => l.UserId == int.Parse(userId) && l.DrawingId == drawingId);
+
+            return Ok(new { drawingId, isLiked });
+        }
+
+
         //  ADMIN: Get summary of likes for all drawings
         [HttpGet("summary")]
         [Authorize(Roles = "Admin")]
