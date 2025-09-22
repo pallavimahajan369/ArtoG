@@ -13,45 +13,53 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const data = await loginUser({ email, password }); // backend: { token, userId, role }
+  try {
+    const data = await loginUser({ email, password }); // backend returns { token, userId, role }
 
-      if (!data?.token) {
-        throw new Error("No token received from server");
-      }
-
-      // ✅ Store in sessionStorage only
-      sessionStorage.setItem("token", data.token);
-      sessionStorage.setItem("userId", data.userId);
-      sessionStorage.setItem("role", data.role);
-
-      // ✅ Fire login event for Navbar
-      window.dispatchEvent(new Event("loginEvent"));
-
-      // ✅ Show success toast
-      toast.success("Login successful!", {
-        autoClose: 2000,
-        position: "top-right",
-        theme: "dark",
-      });
-
-      // ✅ Redirect to home
-      setTimeout(() => navigate("/"), 2000);
-    } catch (error) {
-      console.error("Login error:", error);
-
-      toast.error("Login failed. Try again.", {
-        autoClose: 2000,
-        position: "top-right",
-        theme: "dark",
-      });
-    } finally {
-      setLoading(false);
+    if (!data?.token) {
+      throw new Error("No token received from server");
     }
-  };
+
+    // Store in sessionStorage
+    sessionStorage.setItem("token", data.token);
+    sessionStorage.setItem("userId", data.userId);
+    sessionStorage.setItem("role", data.role);
+
+    // Fire login event for Navbar
+    window.dispatchEvent(new Event("loginEvent"));
+
+    // Show success toast
+    toast.success("Login successful!", {
+      autoClose: 1500,
+      position: "top-right",
+      theme: "dark",
+    });
+
+    // Redirect based on role
+    setTimeout(() => {
+      if (data.role === "Admin") {
+        navigate("/admin/dashboard"); // admin dashboard route
+      } else {
+        navigate("/"); // normal user home page
+      }
+    }, 1500);
+
+  } catch (error) {
+    console.error("Login error:", error);
+
+    toast.error("Login failed. Try again.", {
+      autoClose: 2000,
+      position: "top-right",
+      theme: "dark",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>

@@ -128,5 +128,28 @@ namespace Backend.Controllers
 
             return Ok(new { message = "User restored successfully" });
         }
+
+        // GET /api/user
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _context.Users
+                .Where(u => u.Role == "User") // filter only users, exclude admins
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.Username,
+                    u.Email,
+                    u.Role,
+                    u.CreatedAt,
+                    u.IsActive
+                })
+                .ToListAsync();
+
+            return Ok(users);
+        }
+
+
     }
 }

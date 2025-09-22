@@ -13,7 +13,8 @@ import Signup from "./pages/Signup";
 import SketchDetailPage from "./pages/SketchDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./components/EditProfile";
-
+import AdminDashboardPage from "./pages/Adminpage/AdminDashboardPage";
+import AdminLayout from "./components/Admin/AdminLayout";
 
 function App() {
   return (
@@ -28,6 +29,16 @@ function App() {
         <Route path="/sketch/:id" element={<SketchDetailPage />} />
        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />
+        <Route path="/admin/*" element={<AdminDashboardPage />} />
+
+ {/* Admin Routes with Layout */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboardPage />} />
+          {/* Future admin pages */}
+          {/* <Route path="sketches" element={<AdminSketchesPage />} /> */}
+          {/* <Route path="users" element={<AdminUsersPage />} /> */}
+        </Route>
+
       </Routes>
     </Router>
   );

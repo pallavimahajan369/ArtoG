@@ -78,6 +78,21 @@ export const deleteUser = async (userId) => {
   return response.data; // { message: "User deactivated successfully" }
 };
 
+export const getAllUsers = async () => {
+  const token = sessionStorage.getItem("token");
+  if (!token) throw new Error("User is not logged in");
+
+  const response = await api.get("/user", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.data; 
+};
+
+
 //  Restore user
 export const restoreUser = async (userId) => {
   const token = sessionStorage.getItem("token");
