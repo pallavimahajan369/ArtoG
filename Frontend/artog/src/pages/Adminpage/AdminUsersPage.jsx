@@ -25,7 +25,7 @@ const AdminUsersPage = () => {
     fetchUsers();
   }, []);
 
-  // Soft-delete user
+  // Soft-delete user (set inactive)
   const handleDelete = async (userId) => {
     try {
       await deleteUser(userId);
@@ -37,7 +37,7 @@ const AdminUsersPage = () => {
     }
   };
 
-  // Restore user
+  // Restore user (set active)
   const handleRestore = async (userId) => {
     try {
       await restoreUser(userId);
@@ -69,48 +69,43 @@ const AdminUsersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(
-              (user) => (
-                console.log(user),
-                (
-                  <tr
-                    key={user.userId}
-                    className="border-b border-gray-700 hover:bg-gray-700/30"
+            {users.map((user) => (
+              <tr
+                key={user.userId}
+                className="border-b border-gray-700 hover:bg-gray-700/30"
+              >
+                <td className="p-4">{user.username}</td>
+                <td className="p-4">{user.email}</td>
+                <td className="p-4">
+                  <span
+                    className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                      user.isActive
+                        ? "bg-green-500/20 text-green-400"
+                        : "bg-red-500/20 text-red-400"
+                    }`}
                   >
-                    <td className="p-4">{user.username}</td>
-                    <td className="p-4">{user.email}</td>
-                    <td className="p-4">
-                      <span
-                        className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                          user.status === "active"
-                            ? "bg-green-500/20 text-green-400"
-                            : "bg-red-500/20 text-red-400"
-                        }`}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      {user.status === "active" ? (
-                        <button
-                          onClick={() => handleDelete(user.userId)}
-                          className="p-2 rounded-md text-gray-400 hover:bg-red-500 hover:text-white transition-colors"
-                        >
-                          <FaTrash className="h-5 w-5" />
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => handleRestore(user.userId)}
-                          className="p-2 rounded-md text-gray-400 hover:bg-green-500 hover:text-white transition-colors"
-                        >
-                          <FaUndo className="h-5 w-5" />
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                )
-              )
-            )}
+                    {user.isActive ? "Active" : "Inactive"}
+                  </span>
+                </td>
+                <td className="p-4">
+                  {user.isActive ? (
+                    <button
+                      onClick={() => handleDelete(user.userId)}
+                      className="p-2 rounded-md text-gray-400 hover:bg-red-500 hover:text-white transition-colors"
+                    >
+                      <FaTrash className="h-5 w-5" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleRestore(user.userId)}
+                      className="p-2 rounded-md text-gray-400 hover:bg-green-500 hover:text-white transition-colors"
+                    >
+                      <FaUndo className="h-5 w-5" />
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

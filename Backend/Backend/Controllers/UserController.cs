@@ -135,7 +135,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _context.Users
-                .Where(u => u.Role == "User") // filter only users, exclude admins
+                .Where(u => u.Role == "User") // filter only users, exclude admin
                 .Select(u => new
                 {
                     u.UserId,
