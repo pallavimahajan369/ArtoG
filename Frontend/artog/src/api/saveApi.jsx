@@ -6,7 +6,7 @@ const token = sessionStorage.getItem("token");
 export const saveDrawing = async (drawingId) => {
   const response = await api.post(
     `/save/${drawingId}`,
-    {}, // empty body
+    {},
     {
       headers: {
         Authorization: `Bearer ${token}`,

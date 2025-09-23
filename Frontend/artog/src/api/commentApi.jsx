@@ -1,6 +1,5 @@
 // commentApi.js
-import api from "../api/axios"; // import your custom axios instance
-
+import api from "../api/axios"; 
 // Get all comments for a drawing
 export const getComments = async (drawingId) => {
   try {

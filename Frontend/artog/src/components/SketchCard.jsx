@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaHeart, FaRegBookmark } from "react-icons/fa";
 
 const SketchCard = ({ sketch }) => {
-  // Backend se base64 aa raha hai
+ 
   const imageUrl = `data:image/jpeg;base64,${sketch.imageBase64}`;
 
   // Check if user is logged in

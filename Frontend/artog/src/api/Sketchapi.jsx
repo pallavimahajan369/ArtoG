@@ -1,30 +1,51 @@
 // src/api/sketchApi.js
-import api from "./axios"; // your axios instance
+import api from "./axios"; 
 
+const token = sessionStorage.getItem("token");
 // User endpoints
 export const getAllSketches = async () => {
-  const response = await api.get("/sketches");
+  const response = await api.get("/sketches", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
 export const getSketchById = async (id) => {
-  const response = await api.get(`/sketches/${id}`);
+  const response = await api.get(`/sketches/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
 // Admin endpoints
 export const getAllSketchesAdmin = async () => {
-  const response = await api.get("/sketches/admin/all");
+  const response = await api.get("/sketches/admin/all", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
 export const getSketchByIdAdmin = async (id) => {
-  const response = await api.get(`/sketches/admin/${id}`);
+  const response = await api.get(`/sketches/admin/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
 export const getSketchesByAdmin = async (adminId) => {
-  const response = await api.get(`/sketches/admin/byuser/${adminId}`);
+  const response = await api.get(`/sketches/admin/user/${adminId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
@@ -37,7 +58,7 @@ export const createSketch = async (formData) => {
 export const updateSketch = async (id, formData) => {
   const token = sessionStorage.getItem("token");
 
-  const response = await api.put(`/sketches/${id}`, formData, {
+  const response = await api.patch(`/sketches/${id}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -48,7 +69,7 @@ export const updateSketch = async (id, formData) => {
 };
 
 export const softDeleteSketch = async (id) => {
-  const token = sessionStorage.getItem("token"); // wherever you store JWT
+  const token = sessionStorage.getItem("token"); 
   const response = await api.delete(`/sketches/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
     "Content-Type": "multipart/form-data",

@@ -1,5 +1,5 @@
 // src/api/contactApi.js
-import api from "./axios"; // your axios instance
+import api from "./axios"; 
 
 // POST a new contact message
 export const sendMessage = async (messageData) => {

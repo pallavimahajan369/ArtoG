@@ -16,7 +16,7 @@ const AdminLayout = () => {
       {/* Sidebar */}
                 <aside
             className={`bg-gray-800 ${
-                isSidebarOpen ? "w-100" : "w-20" // increased from w-64 to w-80
+                isSidebarOpen ? "w-100" : "w-20" 
             } transition-all duration-300 ease-in-out flex flex-col`}
             >
 

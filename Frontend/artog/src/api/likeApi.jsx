@@ -7,7 +7,7 @@ const token = sessionStorage.getItem("token");
 export const likeDrawing = async (drawingId) => {
   const response = await api.post(
     `/like/${drawingId}`,
-    {}, // empty body
+    {}, 
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -21,7 +21,7 @@ export const likeDrawing = async (drawingId) => {
 export const unlikeDrawing = async (drawingId) => {
   const response = await api.delete(
     `/like/${drawingId}`,
-    {}, // empty body
+    {}, 
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -164,16 +164,19 @@ namespace Backend.Controllers
             return Ok(new { message = "Sketch uploaded successfully" });
         }
 
-        //  PUT (Only Admin)
-        [HttpPut("{id}")]
+        // PATCH /api/sketches/{id}
+        [HttpPatch("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Update(int id, [FromForm] SketchCreateDto dto)
+        public async Task<ActionResult> UpdatePartial(int id, [FromForm] SketchCreateDto dto)
         {
             var sketch = await _context.Sketches.FindAsync(id);
             if (sketch == null) return NotFound();
 
-            sketch.Title = dto.Title;
-            sketch.Description = dto.Description;
+            if (!string.IsNullOrEmpty(dto.Title))
+                sketch.Title = dto.Title;
+
+            if (!string.IsNullOrEmpty(dto.Description))
+                sketch.Description = dto.Description;
 
             if (dto.ImageFile != null)
             {
@@ -183,8 +186,9 @@ namespace Backend.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Sketch updated successfully" });
+            return Ok(new { message = "Sketch updated successfully ...." });
         }
+
 
 
 

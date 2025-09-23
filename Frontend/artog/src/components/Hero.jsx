@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // ✅ import Link
+import { Link } from "react-router-dom"; 
 import BG from "../images/BG.jpeg";
 import naru from "../images/naru.png";
 
@@ -66,7 +66,7 @@ const Hero = () => {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
             <Link
-              to="/gallery" // ✅ React Router Link instead of <a>
+              to="/gallery" 
               className="px-10 py-4 bg-orange-600 text-white font-bold rounded-xl shadow-2xl transform transition-all duration-300 hover:scale-110 hover:bg-orange-500 hover:shadow-orange-500/60"
             >
               Gallery

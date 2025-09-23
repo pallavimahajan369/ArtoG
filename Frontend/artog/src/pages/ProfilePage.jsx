@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getUserDetails, getUserSavedDrawings } from "../api/userApi";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
-import SketchCard from "../components/SketchCard"; // ✅ import your new card
+import SketchCard from "../components/SketchCard"; 
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -24,11 +24,11 @@ function ProfilePage() {
 
       const savedData = await getUserSavedDrawings(userId);
 
-      // ✅ Normalize savedData to match SketchCard props
+      //  Normalize savedData to match SketchCard props
       const normalizedArtworks = savedData.map((art) => ({
         ...art,
         imageBase64: art.imageData, // map imageData -> imageBase64
-        uploadedByName: art.uploadedByName || userData.username, // fallback to current user
+        uploadedByName: art.uploadedByName || userData.username, 
       }));
 
       setSavedArtworks(normalizedArtworks);

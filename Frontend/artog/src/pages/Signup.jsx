@@ -37,7 +37,7 @@ const Signup = () => {
         theme: "dark",
       });
 
-      // Navigate to login after short delay so toast is visible
+      // Redirect to login after a short delay
       setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       console.error("Signup failed:", error.response?.data || error.message);

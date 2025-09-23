@@ -131,7 +131,7 @@ const Contact = () => {
       <Navbar />
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black via-gray-900/50 to-black opacity-80"></div>
 
-      {/* ❄ Snowflakes ❄ */}
+      {/*  Snowflakes  */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         {snowflakePositions.map((pos, i) => (
           <div

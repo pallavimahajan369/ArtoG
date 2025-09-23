@@ -7,14 +7,14 @@ import {
   saveDrawing,
   removeSavedDrawing,
   getDrawingSaveCount,
-  getSaveStatus,   
+  getSaveStatus,
 } from "../api/saveApi";
 
 import {
   likeDrawing,
   unlikeDrawing,
   getLikeStatus,
-  getLikeCount,  
+  getLikeCount,
 } from "../api/likeApi";
 import CommentSection from "../components/CommentSection";
 import Navbar from "../components/Navbar";
@@ -27,8 +27,7 @@ const SketchDetailPage = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [saveCount, setSaveCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-const [likeCount, setLikeCount] = useState(0);
-
+  const [likeCount, setLikeCount] = useState(0);
 
   const userId = sessionStorage.getItem("userId");
 
@@ -52,50 +51,45 @@ const [likeCount, setLikeCount] = useState(0);
     }
   }, [id]);
 
-useEffect(() => {
-  const fetchLikeStatusAndCount = async () => {
-    if (!userId || !id) return;
+  useEffect(() => {
+    const fetchLikeStatusAndCount = async () => {
+      if (!userId || !id) return;
+
+      try {
+        const countRes = await getLikeCount(id);
+        setLikeCount(countRes);
+
+        const { isLiked } = await getLikeStatus(id);
+        setIsLiked(isLiked);
+      } catch (err) {
+        console.error("Failed to fetch like status/count", err);
+      }
+    };
+
+    fetchLikeStatusAndCount();
+  }, [id, userId]);
+
+  const handleLikeToggle = async () => {
+    if (!userId) {
+      alert("You need to login to like drawings!");
+      return;
+    }
 
     try {
-      // Count laao
-      const countRes = await getLikeCount(id);
-      setLikeCount(countRes);
-
-      // Status laao
-      const { isLiked } = await getLikeStatus(id);
-      setIsLiked(isLiked);
+      if (isLiked) {
+        await unlikeDrawing(sketch.drawingId);
+        setIsLiked(false);
+        setLikeCount((prev) => prev - 1);
+      } else {
+        await likeDrawing(sketch.drawingId);
+        setIsLiked(true);
+        setLikeCount((prev) => prev + 1);
+      }
     } catch (err) {
-      console.error("Failed to fetch like status/count", err);
+      console.error("Failed to update like", err);
+      alert(err.response?.data?.message || "Failed to like/unlike");
     }
   };
-
-  fetchLikeStatusAndCount();
-}, [id, userId]);
-
-
-const handleLikeToggle = async () => {
-  if (!userId) {
-    alert("You need to login to like drawings!");
-    return;
-  }
-
-  try {
-    if (isLiked) {
-      await unlikeDrawing(sketch.drawingId);
-      setIsLiked(false);
-      setLikeCount((prev) => prev - 1);
-    } else {
-      await likeDrawing(sketch.drawingId);
-      setIsLiked(true);
-      setLikeCount((prev) => prev + 1);
-    }
-  } catch (err) {
-    console.error("Failed to update like", err);
-    alert(err.response?.data?.message || "Failed to like/unlike");
-  }
-};
-
-
 
   // Check save status for current user
   useEffect(() => {
@@ -170,9 +164,13 @@ const handleLikeToggle = async () => {
   };
 
   if (loading)
-    return <div className="text-center py-20 text-white">Loading Sketch...</div>;
+    return (
+      <div className="text-center py-20 text-white">Loading Sketch...</div>
+    );
   if (!sketch)
-    return <div className="text-center py-20 text-white">Sketch not found.</div>;
+    return (
+      <div className="text-center py-20 text-white">Sketch not found.</div>
+    );
 
   const imageUrl = `data:image/jpeg;base64,${sketch.imageBase64}`;
 
@@ -213,7 +211,9 @@ const handleLikeToggle = async () => {
                     onClick={handleLikeToggle}
                     className="flex items-center gap-2 text-red-500 hover:text-red-400 font-semibold"
                   >
-                    <FaHeart className={`${isLiked ? "text-red-500" : "text-red-400"}`} />
+                    <FaHeart
+                      className={`${isLiked ? "text-red-500" : "text-red-400"}`}
+                    />
                     <span>
                       {likeCount} {likeCount === 1 ? "Like" : "Likes"}
                     </span>
@@ -234,7 +234,7 @@ const handleLikeToggle = async () => {
 
               {/* Action Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-               <button
+                <button
                   onClick={handleLikeToggle}
                   className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors ${
                     isLiked

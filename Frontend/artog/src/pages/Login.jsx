@@ -17,7 +17,7 @@ const Login = () => {
   setLoading(true);
 
   try {
-    const data = await loginUser({ email, password }); // backend returns { token, userId, role }
+    const data = await loginUser({ email, password }); 
 
     if (!data?.token) {
       throw new Error("No token received from server");
@@ -140,7 +140,7 @@ const Login = () => {
       </div>
 
       <Footer />
-      {/* ✅ Toast for this page */}
+      {/*  Toast for  page */}
       <ToastContainer />
     </>
   );

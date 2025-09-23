@@ -60,7 +60,7 @@ const EditProfilePage = () => {
         email: formData.email,
       };
 
-      await updateUser(userId, updatedUser); // PATCH call
+      await updateUser(userId, updatedUser); 
       toast.success("Profile updated successfully!");
       setTimeout(() => navigate("/profile"), 1500);
     } catch (error) {

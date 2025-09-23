@@ -47,7 +47,7 @@ export const getUserLikedDrawings = async (userId) => {
 };
 
 //  Update user
-// src/api/userApi.js
+
 export const updateUser = async (userId, updatedUser) => {
   const token = sessionStorage.getItem("token");
   if (!token) throw new Error("User is not logged in");
@@ -62,7 +62,6 @@ export const updateUser = async (userId, updatedUser) => {
   return response.data;
 };
 
-
 //  Delete user (soft delete)
 export const deleteUser = async (userId) => {
   const token = sessionStorage.getItem("token");
@@ -75,7 +74,7 @@ export const deleteUser = async (userId) => {
     },
   });
 
-  return response.data; // { message: "User deactivated successfully" }
+  return response.data;
 };
 
 export const getAllUsers = async () => {
@@ -89,9 +88,8 @@ export const getAllUsers = async () => {
     },
   });
 
-  return response.data; 
+  return response.data;
 };
-
 
 //  Restore user
 export const restoreUser = async (userId) => {
@@ -105,5 +103,5 @@ export const restoreUser = async (userId) => {
     },
   });
 
-  return response.data; // { message: "User restored successfully" }
+  return response.data;
 };
