@@ -59,7 +59,8 @@ namespace Backend.Controllers
                 ImageBase64 = Convert.ToBase64String(sketch.ImageData),
                 UploadedBy = sketch.UploadedBy,
                 UploadedByName = sketch.User.Username,
-                CreatedAt = sketch.CreatedAt
+                CreatedAt = sketch.CreatedAt,
+                IsActive = sketch.IsActive
             };
         }
 
@@ -83,7 +84,8 @@ namespace Backend.Controllers
                 ImageBase64 = Convert.ToBase64String(s.ImageData),
                 UploadedBy = s.UploadedBy,
                 UploadedByName = s.User.Username,
-                CreatedAt = s.CreatedAt
+                CreatedAt = s.CreatedAt,
+                IsActive = s.IsActive
             }).ToList();
         }
 
@@ -106,7 +108,8 @@ namespace Backend.Controllers
                 ImageBase64 = Convert.ToBase64String(sketch.ImageData),
                 UploadedBy = sketch.UploadedBy,
                 UploadedByName = sketch.User.Username,
-                CreatedAt = sketch.CreatedAt
+                CreatedAt = sketch.CreatedAt,
+                IsActive = sketch.IsActive
             };
         }
 

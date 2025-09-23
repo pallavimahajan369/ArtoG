@@ -51,6 +51,7 @@ export const softDeleteSketch = async (id) => {
   const token = sessionStorage.getItem("token"); // wherever you store JWT
   const response = await api.delete(`/sketches/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
+    "Content-Type": "multipart/form-data",
   });
   return response.data;
 };
@@ -59,6 +60,7 @@ export const restoreSketch = async (id) => {
   const token = sessionStorage.getItem("token");
   const response = await api.post(`/sketches/restore/${id}`, null, {
     headers: { Authorization: `Bearer ${token}` },
+    "Content-Type": "multipart/form-data",
   });
   return response.data;
 };
