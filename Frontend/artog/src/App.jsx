@@ -15,30 +15,34 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./components/EditProfile";
 import AdminDashboardPage from "./pages/Adminpage/AdminDashboardPage";
 import AdminLayout from "./components/Admin/AdminLayout";
+import AdminSketchesPage from "./pages/Adminpage/AdminSketchesPage";
+import AdminAddSketchPage from "./pages/Adminpage/AdminAddSketchPage";
+import AdminEditSketchPage from "./pages/Adminpage/AdminEditSketchPage";
+import AdminUsersPage from "./pages/Adminpage/AdminUsersPage";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/gallery" element={<Gallery showSubtitle={false}  />} />
+        <Route path="/gallery" element={<Gallery showSubtitle={false} />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login  />} />
-        <Route path="/signup" element={<Signup  />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/sketch/:id" element={<SketchDetailPage />} />
-       <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/admin/*" element={<AdminDashboardPage />} />
 
- {/* Admin Routes with Layout */}
+        {/* Admin Routes with Layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboardPage />} />
-          {/* Future admin pages */}
-          {/* <Route path="sketches" element={<AdminSketchesPage />} /> */}
-          {/* <Route path="users" element={<AdminUsersPage />} /> */}
+          <Route path="sketches" element={<AdminSketchesPage />} />
+          <Route path="sketches/add" element={<AdminAddSketchPage />} />
+          <Route path="sketches/edit/:id" element={<AdminEditSketchPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
         </Route>
-
       </Routes>
     </Router>
   );

@@ -128,7 +128,8 @@ namespace Backend.Controllers
                 ImageBase64 = Convert.ToBase64String(s.ImageData),
                 UploadedBy = s.UploadedBy,
                 UploadedByName = s.User.Username,
-                CreatedAt = s.CreatedAt
+                CreatedAt = s.CreatedAt,
+                IsActive = s.IsActive 
             }).ToList();
         }
 
@@ -182,7 +183,7 @@ namespace Backend.Controllers
             return Ok(new { message = "Sketch updated successfully" });
         }
 
-      
+
 
         //  SOFT DELETE (Only Admin)
         [HttpDelete("{id}")]
@@ -192,12 +193,13 @@ namespace Backend.Controllers
             var sketch = await _context.Sketches.FindAsync(id);
             if (sketch == null) return NotFound();
 
-            sketch.IsActive = false; 
+            sketch.IsActive = false;
             _context.Sketches.Update(sketch);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Sketch soft deleted successfully" });
         }
+
 
         //  RESTORE (Only Admin)
         [HttpPost("restore/{id}")]

@@ -9,6 +9,7 @@
         public int UploadedBy { get; set; }
         public string UploadedByName { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool IsActive { get; set; }
     }
 
 }
