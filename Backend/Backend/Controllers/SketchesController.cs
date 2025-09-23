@@ -114,7 +114,7 @@ namespace Backend.Controllers
         }
 
         //  Get all sketches uploaded by a specific Admin (Admin only)
-        [HttpGet("admin/byuser/{adminId}")]
+        [HttpGet("admin/user/{adminId}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<SketchReadDto>>> GetByAdmin(int adminId)
         {
