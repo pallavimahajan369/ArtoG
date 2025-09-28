@@ -19,6 +19,7 @@ import AdminSketchesPage from "./pages/Adminpage/AdminSketchesPage";
 import AdminAddSketchPage from "./pages/Adminpage/AdminAddSketchPage";
 import AdminEditSketchPage from "./pages/Adminpage/AdminEditSketchPage";
 import AdminUsersPage from "./pages/Adminpage/AdminUsersPage";
+import AdminContactsPage from "./pages/Adminpage/AdminContactsPage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="sketches/add" element={<AdminAddSketchPage />} />
           <Route path="sketches/edit/:id" element={<AdminEditSketchPage />} />
           <Route path="users" element={<AdminUsersPage />} />
+          <Route path="contacts" element={<AdminContactsPage />} />
         </Route>
       </Routes>
     </Router>

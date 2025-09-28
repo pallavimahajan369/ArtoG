@@ -6,6 +6,7 @@ import {
   FaUsers,
   FaSignOutAlt,
   FaPlus,
+  FaEnvelope ,
 } from "react-icons/fa";
 
 const AdminLayout = () => {
@@ -85,6 +86,19 @@ const AdminLayout = () => {
             <FaUsers className="h-6 w-6" />
             {isSidebarOpen && <span className="ml-4 font-semibold text-3xl">Users</span>}
           </NavLink>
+
+          <NavLink
+            to="/admin/contacts"
+            className={({ isActive }) =>
+              `flex items-center p-3 rounded-lg transition-colors duration-200 ${
+                isActive ? "bg-orange-600 text-white" : "hover:bg-gray-700"
+              }`
+            }
+          >
+            <FaEnvelope className="h-6 w-6" />
+            {isSidebarOpen && <span className="ml-4 font-semibold text-3xl">Messages</span>}
+          </NavLink>
+          
         </nav>
 
         <div className="px-4 py-6 border-t border-gray-700 space-y-2">
