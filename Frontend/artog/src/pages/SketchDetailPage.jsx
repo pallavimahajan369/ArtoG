@@ -140,7 +140,7 @@ const SketchDetailPage = () => {
       return;
     }
     try {
-      const newComment = await postComment(sketch.sketchId, { content: text });
+      const newComment = await postComment(sketch.drawingId, { content: text });
       setSketch((prev) => ({
         ...prev,
         comments: [newComment, ...(prev.comments || [])],

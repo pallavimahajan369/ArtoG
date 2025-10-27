@@ -13,22 +13,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-//  Swagger with JWT support
+//Swagger with JWT support
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ArtoG API", Version = "v1" });
 
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter JWT token like: Bearer {your token}"
-    });
+c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+{
+    Name = "Authorization",
+    Type = SecuritySchemeType.Http,
+    Scheme = "Bearer",
+    BearerFormat = "JWT",
+    In = ParameterLocation.Header,
+    Description = "Enter JWT token like: Bearer {your token}"
+});
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -71,17 +71,18 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
+    options.AddPolicy( "AllowNetlify",
         policy => policy
             .WithOrigins("http://localhost:5173") // React URL
+            //.WithOrigins("https://meek-faloodeh-4a708b.netlify.app/")
             .AllowAnyHeader()
             .AllowAnyMethod()
     );
 });
 
 var app = builder.Build();
-
-app.UseCors("AllowFrontend");
+app.UseCors("AllowNetlify");
+//app.UseCors("AllowFrontend");
 
 
 

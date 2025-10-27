@@ -37,16 +37,27 @@ const AdminDashboardPage = () => {
     const fetchUsers = async () => {
       try {
         const users = await getAllUsers(); // API from userApi.js
+
         setTotalUsers(users.length);
 
         // Prepare monthly user growth chart
         const months = [
-          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
         ];
 
         const growth = new Array(12).fill(0);
-        users.forEach(user => {
+        users.forEach((user) => {
           const monthIndex = new Date(user.createdAt).getMonth();
           growth[monthIndex]++;
         });
@@ -69,7 +80,8 @@ const AdminDashboardPage = () => {
     const fetchLikes = async () => {
       try {
         const data = await getLikesSummary();
-        setTotalLikes(data.totalLikes);
+
+        setTotalLikes(data.length);
       } catch (error) {
         console.error("Failed to fetch likes:", error);
       }

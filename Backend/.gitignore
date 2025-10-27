@@ -1,0 +1,9 @@
+# Ignore build folders
+.vs/
+bin/
+obj/
+
+.git/
+# Ignore sensitive config files
+appsettings.json
+
